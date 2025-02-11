@@ -167,6 +167,16 @@ h1{
         margin: 30px auto 30px auto;
     }
 
+    .resultado{
+        font-size: 52px;
+        margin: 25px auto 25px auto;
+    }
+
+    .palabraMostrarTexto{
+        font-size: 50px;
+        margin: 25px auto 25px auto;
+    }
+
     .vidas{
         margin-top: 25px;
         display: block;
@@ -216,9 +226,24 @@ h1{
 @media screen and (max-width:599px){
 
     h1{
-        font-size: 28px;
+        font-size: 26px;
         margin: 25px auto 25px auto;
     }
+
+    .resultado{
+        font-size: 22px;
+        margin: 25px auto 25px auto;
+    }
+
+    .palabraMostrarTexto{
+        font-size: 20px;
+        margin: 25px auto 25px auto;
+    }
+
+    .palabraMostrar{
+        font-size: 18px;
+    }
+
 
     .vidas{
         margin-top: 22px;
