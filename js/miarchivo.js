@@ -1,6 +1,6 @@
 const palabras = ['Pseint','Index','Tinto','Caprendizaje','SofiaPlus','JavaScript','Galicia','Div','Github','Aprendiz','Chichipato','Repositorio','Diego','Frontend','Algoritmo','Variable','Backend','Interfaz','Codigo','Script'];
 
-6
+
 const contenedor = document.getElementById('contenedor');
 // contenedor de letras
 const botonInicio = document.getElementById('botonInicio');
@@ -101,6 +101,11 @@ const AñadirPalabra = () => {
     });
 };
 
+const agregarLetra = Letra => {
+    const elementoLetra = document.createElement('span');
+    elementoLetra.innerHTML = Letra.toUpperCase();
+};
+
 // Función que simula la entrada de una letra
 const teclaPresionada = (event) => {
     Letra = event.target.innerHTML.toUpperCase();
@@ -165,10 +170,7 @@ const letraEquivocada = () => {
 
 };
 
-const agregarLetra = Letra => {
-    const elementoLetra = document.createElement('span');
-    elementoLetra.innerHTML = Letra.toUpperCase();
-};
+
 
 
 
