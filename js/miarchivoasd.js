@@ -1,16 +1,17 @@
-const palabras = ['Pseint','Index','Tinto','Caprendizaje','SofiaPlus','JavaScript','Galicia','Div','Github','Aprendiz','Chichipato','Repositorio','Diego','Frontend','Algoritmo','Variable','Backend','Interfaz','Codigo','Script'];
+const palabras = ['Pseint','Index','Tinto','Caprendizaje','SofiaPlus','JavaScript','Galicia','Div','Github','Aprendiz','Chichipato','Repositorio','','Frontend','Algoritmo','Variable','Backend','Interfaz','Codigo','Script'];
 
 
 const contenedor = document.getElementById('contenedor');
+const Usadas = []
 const botonInicio = document.getElementById('botonInicio');
 const palabraMostrar = document.getElementById('palabraMostrar');
 const resultado = document.getElementById('resultado');
 const palabraMostrarTexto = document.getElementById('palabraMostrarTexto');
 const vidasContenedor = document.getElementById('vidas');
 const textoVidas = document.getElementById('textoVidas');
-const botonesTeclado = document.querySelectorAll('#tecla');
+const keyboardButtons = document.querySelectorAll('.key');
 const by = document.getElementById('by');
-const contenedorTeclado = document.getElementById("contenedorTeclado")
+const contenedorTeclado = document.getElementById("keyboardContainer")
 //ocultar varios textos al iniciar el juego por primera vez, despues al darle al boton de rejugar el evento les da la orden de ocultarse"
 
 
@@ -40,6 +41,7 @@ botonInicio.addEventListener('click', ()=>{
     letrasUsadas = [];
     hits = 0;
     contenedor.innerHTML = '';
+    Usadas.innerHTML = '';
     botonInicio.style.display = 'none';
     palabraMostrar.style.display = 'block';
     palabraMostrar.textContent = "";
@@ -53,12 +55,13 @@ botonInicio.addEventListener('click', ()=>{
     contenedorTeclado.style.display = 'block';
 
     corazones();
-    resetTeclado();
+ 
+
     palabraAleatoria();
     AñadirPalabra();
 
     //se incluye el evento de agregar letras, si es segunda vez jugando, se incluye nuevamente
-     
+    document.addEventListener('keydown', eventoletra);  
     
     
 });
@@ -74,12 +77,17 @@ const agregarLetra = Letra => {
     elementoLetra.innerHTML = Letra.toUpperCase();
 }
 
+/* const addBodyPart = bodyPart => {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(...bodyPart);
+}; */
 
 
 
 const endGame = () => {
+    document.removeEventListener('keydown', eventoletra);
 
-    
+    //se quita el evento de escuchar teclas apretadas porque ya acabo el juego
 
     botonInicio.style.display = 'block';
     palabraMostrar.textContent = palabraseleccionada
@@ -94,7 +102,7 @@ const endGame = () => {
 
 
     if(vidas == 0){
-        resultado.textContent = 'PERDISTE :(';
+        resultado.textContent = 'PERDISTE ;(';
         resultado.classList.remove('verdecito');
         resultado.classList.add('rojito');
         palabraMostrarTexto.classList.add('rojito');
@@ -109,7 +117,6 @@ const endGame = () => {
         palabraMostrar.classList.add('verdecito');
 
     }
-
 }
 
 const letraCorrecta = Letra => {
@@ -139,11 +146,10 @@ const letraEquivocada = () => {
 
     if(vidas == 0){
         endGame();
-    };
+    }; // ahi iva === bodyParts.length, lo cambie por 10 para que sean 10 intentos por palabra
+        //aca se puede poner que aparezca un texto que diga game over cuando los errores igualen la cantidad de partes del muñeco, o se puede cambiar por el sistema de vidas, todo esto cuando la letra es erronea ( va a saltar error en js porque quite la parte del muñeco)
 
 }
-
-
 
 const LetraDetectada = Letra => {
     if(Seleccionada.includes(Letra)) {
@@ -160,27 +166,37 @@ const LetraDetectada = Letra => {
 
 
 // Función que simula la entrada de una letra
-const teclaPresionada = (event) => {
+const buttonClick = (event) => {
     Letra = event.target.innerHTML.toUpperCase();
     if (!letrasUsadas.includes(Letra)) {
         LetraDetectada(Letra);
 
-        //si las letras usadas no incluyen la nueva letra presionada, se detecta una nueva y se le asigna la clase usado
-
-        event.target.classList.add('usado');
-
-        //a la tecla seleccionada se le asigna el usado.
+        event.target.classList.add('used');
     }
 };
 
 // Añadir el evento click a cada botón del teclado
-botonesTeclado.forEach(button => {
-    button.addEventListener('click', teclaPresionada);
+keyboardButtons.forEach(button => {
+    button.addEventListener('click', buttonClick);
 });
 
 
 
+const eventoletra = event => {
+    let nuevaLetra = event.key.toUpperCase();
+    // el event.key guardara el valor de la tecla presionada y la convertira en mayuscula
 
+    if(nuevaLetra.match(/^[a-zñ]$/i) && !letrasUsadas.includes(nuevaLetra)){
+
+        //Preguntar si la letra presionada es una tecla entre la a-z e incluyendo la ñ con la expresion regular
+
+        // && si se uso ya la letra, con el ! se niega el "letrasUsadas.includes(nuevaLetra), es decir que no se incluye"
+
+
+        
+        LetraDetectada(nuevaLetra);
+    };
+};
 
 const AñadirPalabra = () => { 
     Seleccionada.forEach(Letra => {
@@ -207,13 +223,6 @@ const palabraAleatoria = () => {
     //la palabra seleccionada pero sin ser dividida por el .split
 }
 
-const resetTeclado = () => {
-    botonesTeclado.forEach(button => {
-        button.classList.remove('usado');
-
-        // se remueve el usado para iniciar otra partida
-    });
-};
 
 
 
